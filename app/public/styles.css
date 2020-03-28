@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+/* #bbcbe4 */
+body {
+    background-color: #ddeaf2;
+}
+
+#container {
+    background-color: #4682b4;
+    margin-top: 1.5vh;
+    margin-left: 10vw;
+    width: 80vw;
+    min-height: 97vh;
+    border-radius: 10px;
+    -webkit-box-shadow: 10px 10px 13px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 13px -5px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 13px -5px rgba(0,0,0,0.75);
+}
+
+#form-container {
+    padding: 2% 0 0 2%;
+}
+
+#form-container * {
+    display: block;
+    margin-bottom: 2em;
+}
+
+.myButton {
+	background-color: #808080;
+	border-radius: 11px;
+	border: 2px solid #ffffff;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 15px;
+	padding: 10px 20px;
+	text-decoration: none;
+}
+.myButton:hover {
+	background-color: #8a8a8a;
+}
+.myButton:active {
+	position: relative;
+	top: 1px;
+}
+
+.myInput {
+    padding: 5px;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: solid;
+    border-radius: 0px;
+    box-shadow: 0px 0px 5px rgba(66,66,66,.75);
+}
+.myInput:focus {
+    outline:none;
+}
+
+#status {
+    margin-left: 2%;
+    padding: 1%;
+    width: 94%;
+    background-color: #fafafa;
+    border-radius: 10px;
+}

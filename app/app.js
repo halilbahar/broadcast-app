@@ -28,16 +28,6 @@ app.use((req, res, next) => {
 });
 
 let currentCommand = null;
-app.post('/new-broadcast', (req, res) => {
-    if (currentCommand != null) {
-        currentCommand.stopStream();
-        currentCommand = null;
-    }
-    currentCommand = new Ffmpeg(req.file.buffer);
-    currentCommand.startStream();
-    res.status(200).json(new Message('Started new stream!'));
-});
-
 app.post('/delete-broadcast', (req, res) => {
     let message = new Message();
     if (currentCommand != null) {
@@ -49,6 +39,26 @@ app.post('/delete-broadcast', (req, res) => {
     }
 
     res.status(200).json(message);
+});
+
+app.use((req, res, next) => {
+    if (!req.file) {
+        res.status(401).json(new Message('No file was provided.'));
+    } else if (req.file.mimetype !== 'audio/mp3') {
+        res.status(401).json(new Message('File is not mp3.'));
+    } else {
+        next();
+    }
+});
+
+app.post('/new-broadcast', (req, res) => {
+    if (currentCommand != null) {
+        currentCommand.stopStream();
+        currentCommand = null;
+    }
+    currentCommand = new Ffmpeg(req.file.buffer);
+    currentCommand.startStream();
+    res.status(200).json(new Message('Started new stream!'));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));

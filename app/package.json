@@ -1,0 +1,19 @@
+{
+  "name": "broadcast-app",
+  "version": "1.0.0",
+  "description": "An application for uploading and streaming audio files on loop",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "author": "Hanna Schauflinger, Halil Bahar",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

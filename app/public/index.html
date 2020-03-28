@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Uploader</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <input id="file" type="file" name="broadcast">
+    <input id="key" type="text" name="key">
+    <button onclick="sendBroadcast()">submit</button>
+    <div id="status"></div>
+</body>
+<script>
+    const fileElement = document.getElementById('file');
+    const keyElement = document.getElementById('key');
+    const statusElement = document.getElementById('status');
+    function sendBroadcast() {
+        const formData = new FormData();
+        formData.append('broadcast', fileElement.files[0]);
+        formData.append('key', keyElement.value);
+
+        const options = {
+            method: 'POST',
+            header: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: formData
+        };
+
+        fetch('/new-broadcast', options)
+            .then(response => {
+                if (response.ok) statusElement.innerHTML += `[${getTime()}] Successful!<br>`;
+                else statusElement.innerHTML += `[${getTime()}] Failed!\n<br>`
+            })
+            .catch(console.log);
+    }
+
+    function getTime() {
+        const date = new Date();
+        return `${appendZero(date.getHours())}:${appendZero(date.getMinutes())}:${appendZero(date.getSeconds())}`;
+    }
+
+    function appendZero(number) {
+        if (number < 10) number = `0${number}`;
+        return number;
+    }
+</script>
+
+</html>

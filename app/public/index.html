@@ -30,11 +30,15 @@
         };
 
         fetch('/new-broadcast', options)
-            .then(response => {
-                if (response.ok) statusElement.innerHTML += `[${getTime()}] Successful!<br>`;
-                else statusElement.innerHTML += `[${getTime()}] Failed!\n<br>`
-            })
+            .then(response => response.json())
+            .then(({ message }) => statusElement.appendChild(createCode(`[${getTime()}] ${message}`)))
             .catch(console.log);
+    }
+
+    function createCode(text) {
+        const code = document.createElement('code');
+        code.innerHTML = `${text}<br>`;
+        return code;
     }
 
     function getTime() {

@@ -7,8 +7,7 @@ WORKDIR /app
 RUN adduser -D -u 1000 node && \
     apk add --no-cache libstdc++ && \
     apk add --no-cache --virtual --update nodejs nodejs-npm && \
-    npm install --production && \
-    mkdir audio
+    npm install --production
 
 ENTRYPOINT []
 

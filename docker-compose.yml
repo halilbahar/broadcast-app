@@ -11,3 +11,6 @@ services:
     image: broadcast-app:latest
     ports:
       - 80:80
+    environment:
+      - HOST=srs
+      - PORT=80

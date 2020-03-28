@@ -13,6 +13,7 @@
             <input id="file" type="file" name="broadcast">
             <input id="key" class="myInput" type="text" name="key" placeholder="your key">
             <button class="myButton" onclick="sendBroadcast()">submit</button>
+            <button class="myButton" onclick="deleteStream()">delete</button>
         </div>
         <div id="status"></div>
     </div>
@@ -25,16 +26,25 @@
         const formData = new FormData();
         formData.append('broadcast', fileElement.files[0]);
         formData.append('key', keyElement.value);
-
-        const options = {
+        sendRequest('/new-broadcast', {
             method: 'POST',
-            header: {
-                'Content-Type': 'multipart/form-data'
-            },
+            header: { 'Content-Type': 'multipart/form-data' },
             body: formData
-        };
+        });
+    }
 
-        fetch('/new-broadcast', options)
+    function deleteStream() {
+        const formData = new FormData();
+        formData.append('key', keyElement.value);
+        sendRequest('/delete-broadcast', {
+            method: 'POST',
+            header: { 'Content-Type': 'multipart/form-data' },
+            body: formData
+        });
+    }
+
+    function sendRequest(url, options) {
+        fetch(url, options)
             .then(response => response.json())
             .then(({ message }) => statusElement.appendChild(createCode(`[${getTime()}] ${message}`)))
             .catch(console.log);

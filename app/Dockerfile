@@ -11,4 +11,6 @@ RUN adduser -D -u 1000 node && \
 
 ENTRYPOINT []
 
+EXPOSE 3000
+
 CMD ["npm", "start"]

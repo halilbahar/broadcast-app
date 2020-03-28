@@ -5,7 +5,7 @@ const app = express();
 
 const Ffmpeg = require('./ffmpeg');
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 const key = process.env.KEY || 'default';
 
 const fs = require('fs');

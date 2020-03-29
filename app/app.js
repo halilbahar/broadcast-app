@@ -1,6 +1,14 @@
 const express = require('express');
 const multer = require('multer');
-const upload = multer();
+const upload = multer({
+    fileFilter: (req, file, cb) => {
+        if(file.mimetype === 'audio/mpeg' || file.mimetype === 'audio/mp3') {
+            cb(null, true);
+        } else {
+            cb(null, false);
+        }
+    }
+});
 const app = express();
 
 const Ffmpeg = require('./ffmpeg');
@@ -43,9 +51,7 @@ app.post('/delete-broadcast', (req, res) => {
 
 app.use((req, res, next) => {
     if (!req.file) {
-        res.status(401).json(new Message('No file was provided.'));
-    } else if (req.file.mimetype !== 'audio/mp3') {
-        res.status(401).json(new Message('File is not mp3.'));
+        res.status(401).json(new Message('No file was provided or it is not a mp3.'));
     } else {
         next();
     }

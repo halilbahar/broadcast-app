@@ -22,6 +22,7 @@
     const fileElement = document.getElementById('file');
     const keyElement = document.getElementById('key');
     const statusElement = document.getElementById('status');
+    const buttons = document.getElementsByClassName('myButton');
 
     function sendBroadcast() {
         const formData = new FormData();
@@ -42,9 +43,19 @@
     }
 
     function sendRequest(url, options) {
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+            buttons[i].classList.add('myButton-disabled');
+        }
         fetch(url, options)
             .then(response => response.json())
-            .then(({ message }) => statusElement.appendChild(createCode(`[${getTime()}] ${message}`)))
+            .then(({ message }) => {
+                statusElement.appendChild(createCode(`[${getTime()}] ${message}`));
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = false;
+                    buttons[i].classList.remove('myButton-disabled');
+                }
+            })
             .catch(console.log);
     }
 

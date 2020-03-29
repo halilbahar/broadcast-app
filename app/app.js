@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const upload = multer({
     fileFilter: (req, file, cb) => {
-        if(file.mimetype === 'audio/mpeg' || file.mimetype === 'audio/mp3') {
+        if (file.mimetype === 'audio/mpeg' || file.mimetype === 'audio/mp3') {
             cb(null, true);
         } else {
             cb(null, false);
@@ -24,7 +24,6 @@ if (!fs.existsSync('./audio')) {
 }
 
 app.use(express.static('public'));
-app.use(upload.single('broadcast'));
 app.use((req, res, next) => {
     if (!req.headers.key) {
         res.status(401).json(new Message('No key was provided.'));
@@ -49,7 +48,7 @@ app.post('/delete-broadcast', (req, res) => {
     res.status(200).json(message);
 });
 
-app.use((req, res, next) => {
+app.use(upload.single('broadcast'), (req, res, next) => {
     if (!req.file) {
         res.status(401).json(new Message('No file was provided or it is not a mp3.'));
     } else {

@@ -30,7 +30,9 @@ app.use((req, res, next) => {
     } else if (req.headers.key !== key) {
         res.status(401).json(new Message('A wrong key was provided.'));
     } else {
-        next();
+        setTimeout(() => {
+            next();
+        }, 500);
     }
 });
 

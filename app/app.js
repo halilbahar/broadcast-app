@@ -26,9 +26,9 @@ if (!fs.existsSync('./audio')) {
 app.use(express.static('public'));
 app.use(upload.single('broadcast'));
 app.use((req, res, next) => {
-    if (!req.body || !req.body.key) {
+    if (!req.headers.key) {
         res.status(401).json(new Message('No key was provided.'));
-    } else if (req.body.key !== key) {
+    } else if (req.headers.key !== key) {
         res.status(401).json(new Message('A wrong key was provided.'));
     } else {
         next();

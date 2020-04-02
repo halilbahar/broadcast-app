@@ -24,6 +24,15 @@ if (!fs.existsSync('./audio')) {
 }
 
 app.use(express.static('public'));
+
+app.get('/broadcast', (req, res) => {
+    if(currentCommand != null) {
+        res.json(new Message(`${currentCommand.getName()} is currently running`));
+    } else {
+        res.json(new Message('Could not get name of file. No stream is running'));
+    }
+});
+
 app.use((req, res, next) => {
     if (!req.headers.key) {
         res.status(401).json(new Message('No key was provided.'));
@@ -63,7 +72,7 @@ app.post('/new-broadcast', (req, res) => {
         currentCommand.stopStream();
         currentCommand = null;
     }
-    currentCommand = new Ffmpeg(req.file.buffer);
+    currentCommand = new Ffmpeg(req.file.buffer, req.file.originalname);
     currentCommand.startStream();
     res.status(200).json(new Message('Started new stream!'));
 });

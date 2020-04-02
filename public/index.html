@@ -24,6 +24,12 @@
     const statusElement = document.getElementById('status');
     const buttons = document.getElementsByClassName('myButton');
 
+    window.onload = () => {
+        sendRequest('/broadcast', {
+            method: 'GET'
+        });
+    }
+
     function sendBroadcast() {
         const formData = new FormData();
         formData.append('broadcast', fileElement.files[0]);
@@ -49,6 +55,10 @@
         }
         fetch(url, options)
             .then(response => response.json())
+            .then(r => {
+                console.log(r);
+                return r;
+            })
             .then(({ message }) => {
                 statusElement.appendChild(createCode(`[${getTime()}] ${message}`));
                 for (let i = 0; i < buttons.length; i++) {

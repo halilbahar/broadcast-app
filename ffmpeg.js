@@ -3,8 +3,9 @@ const { spawn } = require('child_process');
 const host = process.env.HOST || 'localhost';
 
 module.exports = class Ffmpeg {
-    constructor(buffer) {
+    constructor(buffer, name) {
         this.fileName = `audio/${Math.random().toString(36).substr(2, 9)}.mp3`;
+        this.name = name;
         writeFileSync(this.fileName, buffer);
     }
 
@@ -29,5 +30,13 @@ module.exports = class Ffmpeg {
     stopStream() {
         this.ffmpeg.kill();
         unlinkSync(this.fileName);
+    }
+
+    getFileName() {
+        return this.fileName;
+    }
+
+    getName() {
+        return this.name;
     }
 }

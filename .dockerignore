@@ -1,5 +1,5 @@
-audio
 node_modules
+src/audio
 .gitignore
 LICENSE
 README.md

@@ -4,8 +4,8 @@
   "description": "An application for uploading and streaming audio files on loop",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
   },
   "author": "Hanna Schauflinger, Halil Bahar",
   "license": "MIT",

@@ -1,6 +1,5 @@
-node_modules
-src/audio
-.gitignore
-LICENSE
-README.md
-srs.conf
+**
+
+!src/
+!package-lock.json
+!package.json

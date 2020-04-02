@@ -5,7 +5,7 @@ const authentication = require('../middleware/authentication-middleware');
 const fileValidation = require('../middleware/file-validation-middleware');
 const upload = require('../middleware/file-middleware');
 
-const Ffmpeg = require('../ffmpeg');
+const Ffmpeg = require('../Ffmpeg');
 const global = require('../global');
 
 router.get('/', (req, res) => {

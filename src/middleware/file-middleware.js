@@ -9,4 +9,5 @@ const upload = multer({
     }
 });
 
+// This is the middleware for using multipart
 module.exports = upload;

@@ -13,7 +13,7 @@
             <input id="file" type="file" name="broadcast">
             <input id="key" class="myInput" type="text" name="key" placeholder="your key">
             <button class="myButton" onclick="sendBroadcast()">submit</button>
-            <button class="myButton" onclick="deleteStream()">delete</button>
+            <button class="myButton" onclick="deleteStream()">stop stream</button>
         </div>
         <div id="status"></div>
     </div>
@@ -25,61 +25,100 @@
     const buttons = document.getElementsByClassName('myButton');
 
     window.onload = () => {
-        sendRequest('/broadcast', {
-            method: 'GET'
-        });
+        const options = { method: 'GET' };
+        fetch('/broadcast', options)
+            .catch(console.log)
+            .then(response => response.ok ? response.json() : null)
+            .then(value => createCode(!value ? 'No stream is currently running' : `${value.name} is currently running`));
     }
 
     function sendBroadcast() {
         const formData = new FormData();
         formData.append('broadcast', fileElement.files[0]);
-        sendRequest('/new-broadcast', {
+        const options = {
             method: 'POST',
             headers: { 'key': keyElement.value },
             body: formData
-        });
+        };
+
+        toggleButton();
+        fetch('/broadcast', options)
+            .catch(console.log)
+            .then(response => {
+                let text;
+                if (response.ok) {
+                    text = 'Stream was created';
+                } else if (response.status === 401) {
+                    text = 'Key is wrong or was not provided';
+                } else if (response.status === 400) {
+                    text = 'No file was provided or it was not mp3';
+                }
+                createCode(text);
+            });
+        toggleButton();
     }
 
     function deleteStream() {
         const formData = new FormData();
-        sendRequest('/delete-broadcast', {
-            method: 'POST',
+        const options = {
+            method: 'DELETE',
             headers: { 'key': keyElement.value }
-        });
+        };
+
+        toggleButton();
+        fetch('/broadcast', options)
+            .catch(console.log)
+            .then(response => {
+                let text;
+                if (response.ok) {
+                    text = 'Stream was stopped';
+                } else if (response.status === 401) {
+                    text = 'Key is wrong or was not provided';
+                } else if (response.status === 404) {
+                    text = 'Stream could not be stopped because it was not running'
+                }
+                createCode(text);
+            })
+        toggleButton();
     }
+
+    ////////////////////
+    // Util Functions //
+    ////////////////////
 
     function sendRequest(url, options) {
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = true;
-            buttons[i].classList.add('myButton-disabled');
-        }
-        fetch(url, options)
+        toggleButton();
+        return fetch(url, options)
+            .catch(console.log)
             .then(response => response.json())
-            .then(r => {
-                console.log(r);
-                return r;
-            })
             .then(({ message }) => {
-                statusElement.appendChild(createCode(`[${getTime()}] ${message}`));
-                for (let i = 0; i < buttons.length; i++) {
-                    buttons[i].disabled = false;
-                    buttons[i].classList.remove('myButton-disabled');
-                }
-            })
-            .catch(console.log);
+                toggleButton();
+                return message;
+            });
     }
 
+    // Toggle the input buttons
+    function toggleButton() {
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = !buttons[i].disabled;
+            buttons[i].classList.toggle('myButton-disabled');
+        }
+    }
+
+    // Create log with given text
     function createCode(text) {
         const code = document.createElement('code');
-        code.innerHTML = `${text}<br>`;
-        return code;
+        code.innerHTML = `[${getTime()}] ${text}<br>`;
+        statusElement.appendChild(code);
     }
 
+    // Get current time in the format - hh:mm:ss
     function getTime() {
         const date = new Date();
         return `${appendZero(date.getHours())}:${appendZero(date.getMinutes())}:${appendZero(date.getSeconds())}`;
     }
 
+    // Append a leading zero
     function appendZero(number) {
         if (number < 10) number = `0${number}`;
         return number;

@@ -54,8 +54,8 @@
                     text = 'No file was provided or it was not mp3';
                 }
                 createCode(text);
+                toggleButton();
             });
-        toggleButton();
     }
 
     function deleteStream() {
@@ -78,24 +78,13 @@
                     text = 'Stream could not be stopped because it was not running'
                 }
                 createCode(text);
+                toggleButton();
             })
-        toggleButton();
     }
 
     ////////////////////
     // Util Functions //
     ////////////////////
-
-    function sendRequest(url, options) {
-        toggleButton();
-        return fetch(url, options)
-            .catch(console.log)
-            .then(response => response.json())
-            .then(({ message }) => {
-                toggleButton();
-                return message;
-            });
-    }
 
     // Toggle the input buttons
     function toggleButton() {

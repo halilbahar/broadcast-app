@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const { port } = require('./global');
 
 // Routers
 const broadcastRouter = require('./routes/broadcast-router');

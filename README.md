@@ -33,7 +33,19 @@ docker build -t broadcast-app:latest app/
 
 ## Deployment
 
-First you need `docker` and `docker-compose` installed. If you are in a network where the internal ip address are default to 172.x.x.x you will need to create a file called `/etc/docker/daemon.json` and paste this in:
+First you need `docker` and `docker-compose` installed:
+```bash
+curl -fsSL https://get.docker.com | bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+If you are in a network where the internal ip address are default to 172.x.x.x you will need to create a file called `/etc/docker/daemon.json`:
+```bash
+sudo nano /etc/docker/daemon.json
+```
+
+Then paste this in:
+
 ```json
 {
   "default-address-pools":

@@ -32,5 +32,4 @@ services:
     environment:
       - HOST=srs
       - KEY=${KEY}
-      - PORT=80
     restart: always

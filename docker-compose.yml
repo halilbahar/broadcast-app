@@ -29,8 +29,6 @@ services:
       - "traefik.http.routers.broadcast-app.rule=Host(`${HOST}`)"
       - "traefik.http.routers.broadcast-app.tls=true"
       - "traefik.http.routers.broadcast-app.tls.certResolver=mytlschallenge"
-    ports:
-      - 80:80
     environment:
       - HOST=srs
       - KEY=${KEY}

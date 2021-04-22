@@ -1,0 +1,18 @@
+defaultEntrypoints = ['web', 'web-secure']
+
+[global]
+  sendAnonymousUsage = false
+[entryPoints.web]
+  address = ':80'
+[entryPoints.web-secure]
+  address = ':443'
+
+[entryPoints.web.http.redirections.entryPoint]
+  scheme = 'https'
+  to = 'web-secure'
+
+[providers.docker]
+
+[certificatesResolvers.mytlschallenge.acme]
+  storage = '/etc/traefik/acme/acme.json'
+[certificatesResolvers.mytlschallenge.acme.tlsChallenge]

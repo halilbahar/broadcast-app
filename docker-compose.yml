@@ -1,0 +1,38 @@
+version: "3"
+services:
+  traefik:
+    image: "traefik:v2.2.0"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./traefik.toml:/etc/traefik/traefik.toml"
+      - "./acme.json:/etc/traefik/acme/acme.json"
+    restart: always
+  srs:
+    image: ossrs/srs:3
+    volumes:
+      - ./srs.conf:/usr/local/srs/conf/srs.conf
+    labels:
+      - "traefik.http.routers.srs.entryPoints=web-secure"
+      - "traefik.http.routers.srs.rule=Host(`${HOST}`) && PathPrefix(`/medt`)"
+      - "traefik.http.routers.srs.tls=true"
+      - "traefik.http.routers.srs.tls.certResolver=mytlschallenge"
+      - "traefik.http.services.srs-service.loadbalancer.server.port=8080"
+    restart: always
+  app:
+    build: .
+    image: broadcast-app:latest
+    labels:
+      - "traefik.http.routers.broadcast-app.entryPoints=web-secure"
+      - "traefik.http.routers.broadcast-app.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.broadcast-app.tls=true"
+      - "traefik.http.routers.broadcast-app.tls.certResolver=mytlschallenge"
+    ports:
+      - 80:80
+    environment:
+      - HOST=srs
+      - KEY=${KEY}
+      - PORT=80
+    restart: always

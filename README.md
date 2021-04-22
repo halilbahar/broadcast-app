@@ -30,3 +30,27 @@ You can also use it for docker. Build the app:
 ```
 docker build -t broadcast-app:latest app/
 ```
+
+## Deployment
+
+First you need `docker` and `docker-compose` installed. If you are in a network where the internal ip address are default to 172.x.x.x you will need to create a file called `/etc/docker/daemon.json` and paste this in:
+```json
+{
+  "default-address-pools":
+  [
+    {"base":"10.10.0.0/16","size":24}
+  ]
+}
+```
+Otherwise networking will stop to work properly.
+
+After that clone this project. In the root do the following:
+```
+cp .env.example .env
+```
+Edit the file. The `HOST` is the domain name of the server. This is needed for automatically acquiring the https certificate. The `KEY` is the 'password' for the upload. Set it to something secure and long.
+
+Now you can just start the `docker-compose.yml`:
+```
+docker-compose up -d
+```

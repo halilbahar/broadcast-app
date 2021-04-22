@@ -8,7 +8,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./traefik.toml:/etc/traefik/traefik.toml"
-      - "./acme.json:/etc/traefik/acme/acme.json"
+      - "./acme:/etc/traefik/acme"
     restart: always
   srs:
     image: ossrs/srs:3
